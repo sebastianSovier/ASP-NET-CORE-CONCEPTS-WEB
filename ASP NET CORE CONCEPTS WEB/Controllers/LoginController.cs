@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ASP_NET_CORE_CONCEPTS_WEB.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NetCoreConcepts.Dal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,80 +12,62 @@ using System.Threading.Tasks;
 namespace ASP_NET_CORE_CONCEPTS_WEB.Controllers
 {
     public class LoginController : Controller
+  
     {
+        UsuarioDal dal = new UsuarioDal();
         // GET: LoginController
         public ActionResult Index()
         {
             return View();
         }
-
-        // GET: LoginController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Register()
         {
             return View();
         }
 
-        // GET: LoginController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: LoginController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var result = await Task.Run(() => dal.CrearUsuario(model));
 
-        // GET: LoginController/Edit/5
-        public ActionResult Edit(int id)
+                if (result.Equals(1))
+                {
+               
+                return RedirectToAction("index", "Home");
+                }
+                else {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                }
+            }
+            return View(model);
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
         {
             return View();
         }
-
-        // POST: LoginController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel user)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var result = await Task.Run(() => dal.ObtenerUsuario(user.usuario));
 
-        // GET: LoginController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                if (result.contrasena.Equals(user.contrasena))
+                {
+                    ViewData["Usuario"] = user.usuario;
+                    return RedirectToAction("Index", "Home");
+                }
 
-        // POST: LoginController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
             }
-            catch
-            {
-                return View();
-            }
+            return View(user);
         }
     }
+    
 }

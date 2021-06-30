@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ASP_NET_CORE_CONCEPTS_WEB.ViewModel;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using NetCoreConcepts.Models;
 using System;
@@ -49,6 +50,9 @@ namespace NetCoreConcepts.Dal
         }
         public UsuarioModels ObtenerUsuario(string usuarioRequest)
         {
+            try
+            {
+
             using (MySqlConnection conexion = new MySqlConnection(_config.GetValue<string>("Data:ConnectionStrings:DefaultConnection")))
             {
                 UsuarioModels usuario = new UsuarioModels();
@@ -74,11 +78,19 @@ namespace NetCoreConcepts.Dal
                     return usuario;
                 }
             }
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
 
-        public void CrearUsuario(UsuarioModels usuarioRequest)
+        public int CrearUsuario(RegisterViewModel usuarioRequest)
         {
-
+            try
+            {
             using (MySqlConnection conexion = new MySqlConnection(_config.GetValue<string>("Data:ConnectionStrings:DefaultConnection")))
             {
                 conexion.Open();
@@ -93,6 +105,13 @@ namespace NetCoreConcepts.Dal
                 cmd.Parameters.Add("?correo", MySqlDbType.VarChar).Value = usuarioRequest.correo;
 
                 cmd.ExecuteNonQuery();
+                return 1;
+            }
+            }
+            catch (Exception)
+            {
+
+                return 0;
             }
         }
     }

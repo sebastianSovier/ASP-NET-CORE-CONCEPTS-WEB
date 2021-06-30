@@ -1,0 +1,35 @@
+﻿@model ASP_NET_CORE_CONCEPTS_WEB.ViewModel.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="usuario"></label>
+                <input asp-for="usuario" class="form-control" />
+                <span asp-validation-for="usuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="contrasena"></label>
+                <input asp-for="contrasena" class="form-control" />
+                <span asp-validation-for="contrasena" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="recordar" type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label" asp-for="recordar">@Html.DisplayNameFor(m => m.recordar)</label>
+                </div>
+
+            </div>
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+
+    </div>
+</div>

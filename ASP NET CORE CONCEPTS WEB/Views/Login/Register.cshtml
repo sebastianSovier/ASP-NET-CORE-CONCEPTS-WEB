@@ -1,0 +1,43 @@
+﻿@model ASP_NET_CORE_CONCEPTS_WEB.ViewModel.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="usuario"></label>
+                <input asp-for="usuario" class="form-control" />
+                <span asp-validation-for="usuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="contrasena"></label>
+                <input asp-for="contrasena" class="form-control" />
+                <span asp-validation-for="contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="nombre_completo"></label>
+                <input asp-for="nombre_completo" class="form-control" />
+                <span asp-validation-for="nombre_completo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="correo"></label>
+                <input asp-for="correo" class="form-control" />
+                <span asp-validation-for="correo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="confirmarContrasena"></label>
+                <input asp-for="confirmarContrasena" class="form-control" />
+                <span asp-validation-for="confirmarContrasena" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn-primary">Registrar</button>
+        </form>
+
+    </div>
+</div>
